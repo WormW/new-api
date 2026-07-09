@@ -69,6 +69,27 @@ export function buildLinuxDOOAuthUrl(clientId: string, state: string): string {
   return `https://connect.linux.do/oauth2/authorize?response_type=code&client_id=${clientId}&state=${state}`
 }
 
+/**
+ * Build custom OAuth authorization URL
+ */
+export function buildCustomOAuthAuthorizationUrl(props: {
+  authorizationEndpoint: string
+  clientId: string
+  redirectUri: string
+  state: string
+  scopes?: string
+}): string {
+  const url = new URL(props.authorizationEndpoint)
+  url.searchParams.set('client_id', props.clientId)
+  url.searchParams.set('redirect_uri', props.redirectUri)
+  url.searchParams.set('response_type', 'code')
+  url.searchParams.set('state', props.state)
+  if (props.scopes) {
+    url.searchParams.set('scope', props.scopes)
+  }
+  return url.toString()
+}
+
 // ============================================================================
 // OAuth Helper Functions
 // ============================================================================
